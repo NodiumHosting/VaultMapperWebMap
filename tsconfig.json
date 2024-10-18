@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"pretty": true,
+		"target": "es6",
+		"module": "es6",
+		"moduleResolution": "node",
+		"allowJs": true,
+		"baseUrl": "./src/",
+		"outDir": "./dist/",
+		"removeComments": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+	}
+}
