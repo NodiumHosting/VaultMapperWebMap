@@ -2,7 +2,7 @@ import Utility from "./Utility";
 
 export default interface Arrow {
 	x: number;
-	y: number;
+	z: number;
 	yaw: number;
 	player: string;
 	color: string;

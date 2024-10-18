@@ -50,7 +50,7 @@ export default class Utility {
 
 		const arrow: Arrow = {
 			x: obj.x,
-			y: obj.z,
+			z: obj.z,
 			yaw: obj.y,
 			player: obj.p,
 			color: obj.c,

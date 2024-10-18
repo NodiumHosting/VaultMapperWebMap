@@ -1,3 +1,3 @@
-const WEBMAP_VERSION = 1;
+const WEBMAP_VERSION = 2;
 
 module.exports = { WEBMAP_VERSION };
