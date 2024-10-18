@@ -5,3 +5,5 @@ arrow|<base64 string>
 cell|<base64 string>
 config|<base64 string>
 reset
+
+packet stuff is Gson serialized -> gzipped -> base64 encoded

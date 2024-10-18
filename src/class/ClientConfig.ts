@@ -1,15 +1,14 @@
 import VaultCell from "./VaultCell";
 
 export default class ClientConfig {
-	public static POINTER_COLOR: string;
-	public static ROOM_COLOR: string;
-	public static START_ROOM_COLOR: string;
-	public static MARKED_ROOM_COLOR: string;
-	public static INSCRIPTION_ROOM_COLOR: string;
-	public static OMEGA_ROOM_COLOR: string;
-	public static CHALLENGE_ROOM_COLOR: string;
-	public static SHOW_INSCRIPTIONS: boolean;
-	public static WEBMAP_ENABLED: boolean;
+	public static POINTER_COLOR: string = "#00FF00";
+	public static ROOM_COLOR: string = "#0000FF";
+	public static START_ROOM_COLOR: string = "#FF0000";
+	public static MARKED_ROOM_COLOR: string = "#FF00FF";
+	public static INSCRIPTION_ROOM_COLOR: string = "#FFFF00";
+	public static OMEGA_ROOM_COLOR: string = "#55FF55";
+	public static CHALLENGE_ROOM_COLOR: string = "#F09E00";
+	public static SHOW_INSCRIPTIONS: boolean = true;
 
 	public static setFromJSON(json: string) {
 		const obj = JSON.parse(json);
@@ -37,9 +36,6 @@ export default class ClientConfig {
 		}
 		if (obj.SHOW_INSCRIPTIONS) {
 			ClientConfig.SHOW_INSCRIPTIONS = obj.SHOW_INSCRIPTIONS;
-		}
-		if (obj.WEBMAP_ENABLED) {
-			ClientConfig.WEBMAP_ENABLED = obj.WEBMAP_ENABLED;
 		}
 	}
 }
