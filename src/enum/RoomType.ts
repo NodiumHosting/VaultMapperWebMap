@@ -5,3 +5,5 @@ enum RoomType {
 	CHALLENGE = 3,
 	OMEGA = 4,
 }
+
+export default RoomType;

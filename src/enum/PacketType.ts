@@ -5,3 +5,5 @@ enum PacketType {
 	CELL = "cell",
 	RESET = "reset",
 }
+
+export default PacketType;

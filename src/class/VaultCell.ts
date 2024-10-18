@@ -1,4 +1,7 @@
 import Utility from "./Utility";
+import CellType from "../enum/CellType";
+import RoomType from "../enum/RoomType";
+import RoomName from "../enum/RoomName";
 
 export default interface VaultCell {
 	x: number;
@@ -11,6 +14,7 @@ export default interface VaultCell {
 	roomName: RoomName; // @SerializedName("n")
 }
 
-export function createVaultCell(base64: string): VaultCell {
-	return Utility.cellFromJSON(Utility.decompressBlob(Utility.base64ToBlob(base64)));
+export async function createVaultCell(base64: string): Promise<VaultCell> {
+	const json = await Utility.decompressBlob(Utility.base64ToBlob(base64));
+	return Utility.cellFromJSON(json);
 }

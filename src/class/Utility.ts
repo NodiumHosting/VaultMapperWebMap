@@ -9,23 +9,14 @@ export default class Utility {
 			byteNumbers[i] = byteCharacters.charCodeAt(i);
 		}
 		const byteArray = new Uint8Array(byteNumbers);
+
 		return new Blob([byteArray]);
 	}
 
-	public static decompressBlob(blob: Blob): string {
-		const ds = new DecompressionStream("gzip");
-		const decompressedStream = blob.stream().pipeThrough(ds);
-		const reader = decompressedStream.getReader();
-		let result = "";
-		const decoder = new TextDecoder();
-		reader.read().then(function processText({ done, value }) {
-			if (done) {
-				return;
-			}
-			result += decoder.decode(value, { stream: true });
-			reader.read().then(processText);
-		});
-		return result;
+	public static async decompressBlob(blob: Blob): Promise<string> {
+		const decompressionStream = new DecompressionStream("gzip");
+		const decompressedStream = blob.stream().pipeThrough(decompressionStream);
+		return await new Response(decompressedStream).text();
 	}
 
 	public static cellFromJSON(json: string): VaultCell {
@@ -52,7 +43,7 @@ export default class Utility {
 			x: obj.x,
 			z: obj.z,
 			yaw: obj.y,
-			player: obj.p,
+			username: obj.u,
 			color: obj.c,
 		};
 

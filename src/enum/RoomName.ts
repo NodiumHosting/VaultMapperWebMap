@@ -16,3 +16,5 @@ enum RoomName {
 	X_MARK = 14,
 	CUBE = 15,
 }
+
+export default RoomName;

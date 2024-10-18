@@ -3,6 +3,9 @@ import Data from "./Data";
 import Canvas from "./Canvas";
 import ClientConfig from "./ClientConfig";
 import Utility from "./Utility";
+import PacketType from "../enum/PacketType";
+import { createVaultCell } from "./VaultCell";
+import { createArrow } from "./Arrow";
 
 export default class WebSocketConnection {
 	private static ws: WebSocket | null = null;
@@ -16,19 +19,19 @@ export default class WebSocketConnection {
 	public static tryConnectWebSocket() {
 		if (this.ws == null || this.ws.readyState === WebSocket.CLOSED) {
 			this.ws = new WebSocket(`ws://${Data.websocket_ip}:${Data.websocket_port}`);
-	
+
 			this.ws.onopen = () => {
 				console.log("WebSocket connection established");
 			};
-	
+
 			this.ws.onmessage = (event) => this.onMessage(event);
-	
+
 			this.ws.onclose = () => {
 				console.log("WebSocket connection closed");
 				this.ws = null;
 				// setTimeout(this.tryConnectWebSocket, 1000);
 			};
-	
+
 			this.ws.onerror = (error) => {
 				console.error("WebSocket error:", error);
 				this.ws!.close();
@@ -36,14 +39,14 @@ export default class WebSocketConnection {
 		}
 	}
 
-	public static onMessage(event: MessageEvent) {
+	public static async onMessage(event: MessageEvent) {
 		const data: [PacketType, string] = event.data.split("|");
 		const type: PacketType = data[0];
-	
+
 		switch (type) {
 			case PacketType.VERSION:
 				const version = parseInt(data[1]);
-	
+
 				if (version !== WEBMAP_VERSION) {
 					console.error("WebMap version mismatch");
 					Canvas.drawVersionMismatchMessage();
@@ -52,19 +55,28 @@ export default class WebSocketConnection {
 				}
 				break;
 			case PacketType.CONFIG:
-				const config = JSON.parse(Utility.decompressBlob(Utility.base64ToBlob(data[1])));
+				const json = await Utility.decompressBlob(Utility.base64ToBlob(data[1]));
+				const config = JSON.parse(json);
 				ClientConfig.setFromJSON(config);
+
+				Canvas.hasChanged = true;
 				break;
 			case PacketType.RESET:
 				Data.clear();
+
+				Canvas.hasChanged = true;
 				break;
 			case PacketType.CELL:
-				const cell = Utility.cellFromJSON(data[1]);
+				const cell = await createVaultCell(data[1]);
 				Data.addOrUpdateCell(cell);
+
+				Canvas.hasChanged = true;
 				break;
 			case PacketType.ARROW:
-				const arrow = Utility.arrowFromJSON(data[1]);
+				const arrow = await createArrow(data[1]);
 				Data.addOrUpdateArrow(arrow);
+
+				Canvas.hasChanged = true;
 				break;
 		}
 	}

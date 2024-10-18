@@ -1,4 +1,5 @@
 import VaultCell from "./VaultCell";
+import RoomType from "../enum/RoomType";
 
 export default class ClientConfig {
 	public static POINTER_COLOR: string = "#00FF00";

@@ -33,9 +33,9 @@ export default class Data {
 	}
 
 	public static addOrUpdateArrow(arrow: Arrow) {
-		if (Data.arrows.find((a: Arrow) => a.x === arrow.x && a.z === arrow.z)) {
+		if (Data.arrows.find((a: Arrow) => a.username === arrow.username)) {
 			Data.arrows.splice(
-				Data.arrows.findIndex((a: Arrow) => a.x === arrow.x && a.z === arrow.z),
+				Data.arrows.findIndex((a: Arrow) => a.username === arrow.username),
 				1,
 			);
 		}

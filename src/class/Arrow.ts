@@ -4,10 +4,11 @@ export default interface Arrow {
 	x: number;
 	z: number;
 	yaw: number;
-	player: string;
+	username: string;
 	color: string;
 }
 
-export function createArrow(base64: string): Arrow {
-	return Utility.arrowFromJSON(Utility.decompressBlob(Utility.base64ToBlob(base64)));
+export async function createArrow(base64: string): Promise<Arrow> {
+	const json = await Utility.decompressBlob(Utility.base64ToBlob(base64));
+	return Utility.arrowFromJSON(json);
 }
