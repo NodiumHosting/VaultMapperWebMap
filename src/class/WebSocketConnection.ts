@@ -7,12 +7,14 @@ import Utility from "./Utility";
 export default class WebSocketConnection {
 	private static ws: WebSocket | null = null;
 
-	public static isConnected() {
-		return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
+	public static isDisconnected() {
+		const isNull = this.ws == null;
+		const isClosed = this.ws?.readyState === WebSocket.CLOSED;
+		return isNull || isClosed;
 	}
 
 	public static tryConnectWebSocket() {
-		if (this.ws === null || this.ws.readyState === WebSocket.CLOSED) {
+		if (this.ws == null || this.ws.readyState === WebSocket.CLOSED) {
 			this.ws = new WebSocket(`ws://${Data.websocket_ip}:${Data.websocket_port}`);
 	
 			this.ws.onopen = () => {
@@ -24,7 +26,7 @@ export default class WebSocketConnection {
 			this.ws.onclose = () => {
 				console.log("WebSocket connection closed");
 				this.ws = null;
-				setTimeout(this.tryConnectWebSocket, 1000);
+				// setTimeout(this.tryConnectWebSocket, 1000);
 			};
 	
 			this.ws.onerror = (error) => {
