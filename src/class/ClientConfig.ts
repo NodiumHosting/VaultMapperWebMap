@@ -46,6 +46,24 @@ export default class ClientConfig {
 }
 
 export function getCellColor(cell: VaultCell): string {
+	let color = _getCellColor(cell);
+	if (!color.startsWith("#")) {
+		color = "#" + color;
+	}
+	if (color.length != 7) {
+		//ARGB
+		if (color.length == 8) {
+			color = "#" + color.substring(2) + color.substring(0, 2);
+		} else if (color.length == 9) {
+			color = "#" + color.substring(3) + color.substring(1, 3);
+		} else {
+			color = "#000000";
+		}
+	}
+	return color;
+}
+
+function _getCellColor(cell: VaultCell): string {
 	if (cell.roomType == RoomType.START) {
 		return ClientConfig.START_ROOM_COLOR;
 	}
