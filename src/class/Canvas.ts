@@ -1,9 +1,9 @@
-import { getCellColor } from "./ClientConfig";
+import ClientConfig, { getCellColor } from "./ClientConfig";
 import VaultCell from "./VaultCell";
 import Arrow from "./Arrow";
 import Data from "./Data";
 import CellType from "../enum/CellType";
-import RoomIcon, { initRoomIcons, RoomIconBitmaps } from "../enum/RoomIcon";
+import { initRoomIcons, RoomIconBitmaps } from "../enum/RoomIcon";
 import RoomName from "../enum/RoomName";
 
 export default class Canvas {
@@ -50,6 +50,7 @@ export default class Canvas {
 	}
 
 	public static async drawCell(cell: VaultCell) {
+		if (cell.inscripted && !cell.explored && !Boolean(ClientConfig.SHOW_INSCRIPTIONS)) return;
 		const x = cell.x + 24;
 		const z = cell.z + 24;
 
@@ -70,7 +71,7 @@ export default class Canvas {
 				break;
 		}
 
-		if (cell.roomName === RoomName.UNKNOWN || !RoomIconBitmaps[cell.roomName]) {
+		if (cell.roomName === RoomName.UNKNOWN || !RoomIconBitmaps[cell.roomName] || !Boolean(ClientConfig.SHOW_ROOM_ICONS)) {
 			return;
 		}
 
