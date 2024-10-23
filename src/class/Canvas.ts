@@ -1,4 +1,4 @@
-import ClientConfig, { getCellColor } from "./ClientConfig";
+import ClientConfig, { fixColor, getCellColor } from "./ClientConfig";
 import VaultCell from "./VaultCell";
 import Arrow from "./Arrow";
 import Data from "./Data";
@@ -85,7 +85,7 @@ export default class Canvas {
 		const z = arrow.z + 24 + 0.5;
 		const yaw = arrow.yaw;
 		const username = arrow.username;
-		const color = arrow.color;
+		const color = fixColor(arrow.color);
 
 		//make a rotated triangle
 		const x1 = -1;

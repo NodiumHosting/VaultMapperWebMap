@@ -2,7 +2,6 @@ import VaultCell from "./VaultCell";
 import RoomType from "../enum/RoomType";
 
 export default class ClientConfig {
-	public static POINTER_COLOR: string = "#00FF00";
 	public static ROOM_COLOR: string = "#0000FF";
 	public static START_ROOM_COLOR: string = "#FF0000";
 	public static MARKED_ROOM_COLOR: string = "#FF00FF";
@@ -15,9 +14,6 @@ export default class ClientConfig {
 	public static setFromJSON(json: string) {
 		const obj = JSON.parse(json);
 
-		if (obj.POINTER_COLOR !== undefined) {
-			ClientConfig.POINTER_COLOR = obj.POINTER_COLOR;
-		}
 		if (obj.ROOM_COLOR !== undefined) {
 			ClientConfig.ROOM_COLOR = obj.ROOM_COLOR;
 		}
@@ -46,21 +42,7 @@ export default class ClientConfig {
 }
 
 export function getCellColor(cell: VaultCell): string {
-	let color = _getCellColor(cell);
-	if (!color.startsWith("#")) {
-		color = "#" + color;
-	}
-	if (color.length != 7) {
-		//ARGB
-		if (color.length == 8) {
-			color = "#" + color.substring(2) + color.substring(0, 2);
-		} else if (color.length == 9) {
-			color = "#" + color.substring(3) + color.substring(1, 3);
-		} else {
-			color = "#000000";
-		}
-	}
-	return color;
+	return fixColor(_getCellColor(cell));
 }
 
 function _getCellColor(cell: VaultCell): string {
@@ -80,4 +62,21 @@ function _getCellColor(cell: VaultCell): string {
 		return ClientConfig.CHALLENGE_ROOM_COLOR;
 	}
 	return ClientConfig.ROOM_COLOR;
+}
+
+export function fixColor(color: string): string {
+	if (!color.startsWith("#")) {
+		color = "#" + color;
+	}
+	if (color.length != 7) {
+		//ARGB
+		if (color.length == 8) {
+			color = "#" + color.substring(2) + color.substring(0, 2);
+		} else if (color.length == 9) {
+			color = "#" + color.substring(3) + color.substring(1, 3);
+		} else {
+			color = "#000000";
+		}
+	}
+	return color;
 }
