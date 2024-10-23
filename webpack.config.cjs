@@ -16,6 +16,11 @@ module.exports = {
 				use: "ts-loader",
 				exclude: /node_modules/,
 			},
+			{
+				// inline base64 png
+				test: /\.png$/,
+				type: "asset/inline",
+			},
 		],
 	},
 	resolve: {
@@ -29,9 +34,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			inject: "body",
 			template: "./src/webmap.html",
-			filename: `webmap-v${
-				require("./src/WEBMAP_VERSION.js").WEBMAP_VERSION
-			}.html`,
+			filename: `webmap-v${require("./src/WEBMAP_VERSION.js").WEBMAP_VERSION}.html`,
 			minify: true,
 			inlineSource: ".(js|css)$",
 		}),

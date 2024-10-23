@@ -3,9 +3,12 @@ import VaultCell from "./VaultCell";
 import Arrow from "./Arrow";
 import Data from "./Data";
 import CellType from "../enum/CellType";
+import RoomIcon, { initRoomIcons, RoomIconBitmaps } from "../enum/RoomIcon";
+import RoomName from "../enum/RoomName";
 
 export default class Canvas {
-	public static init() {
+	public static async init() {
+		await initRoomIcons();
 		requestAnimationFrame(Canvas.doRender);
 		Canvas.canvas = document.getElementById("map") as HTMLCanvasElement;
 	}
@@ -20,6 +23,24 @@ export default class Canvas {
 	private static middle: number = Math.floor(Canvas.width / 2);
 	private static cellSize: number = Math.floor(Canvas.width / 49);
 
+	public static base64ToBlob(base64Input: string): Blob {
+		const parts = base64Input.split(";base64,");
+		const base64 = parts[1];
+		const mimeType = parts[0].split(":")[1];
+
+		try {
+			const byteCharacters = atob(base64);
+			const byteNumbers = new Array(byteCharacters.length);
+			for (let i = 0; i < byteCharacters.length; i++) {
+				byteNumbers[i] = byteCharacters.charCodeAt(i);
+			}
+			const byteArray = new Uint8Array(byteNumbers);
+			return new Blob([byteArray], { type: mimeType });
+		} catch (e) {
+			return new Blob();
+		}
+	}
+
 	public static drawVersionMismatchMessage() {
 		Canvas.ctx.fillStyle = "red";
 		Canvas.ctx.fillRect(0, 0, Canvas.width, Canvas.height);
@@ -28,7 +49,7 @@ export default class Canvas {
 		Canvas.ctx.fillText("WebMap version mismatch", Canvas.middle - 100, Canvas.middle);
 	}
 
-	public static drawCell(cell: VaultCell) {
+	public static async drawCell(cell: VaultCell) {
 		const x = cell.x + 24;
 		const z = cell.z + 24;
 
@@ -48,9 +69,15 @@ export default class Canvas {
 				Canvas.ctx.fillRect(x * Canvas.cellSize + Canvas.cellSize / 4, z * Canvas.cellSize, (Canvas.cellSize / 4) * 2, Canvas.cellSize);
 				break;
 		}
+
+		if (cell.roomName === RoomName.UNKNOWN || !RoomIconBitmaps[cell.roomName]) {
+			return;
+		}
+
+		Canvas.ctx.drawImage(RoomIconBitmaps[cell.roomName], x * Canvas.cellSize, z * Canvas.cellSize, Canvas.cellSize, Canvas.cellSize);
 	}
 
-	public static drawArrow(arrow: Arrow) {
+	public static async drawArrow(arrow: Arrow) {
 		const x = arrow.x + 24 + 1.5;
 		const z = arrow.z + 24 + 0.5;
 		const yaw = arrow.yaw;
