@@ -74,7 +74,9 @@ export default class Canvas {
 			return;
 		}
 
-		Canvas.ctx.drawImage(RoomIconBitmaps[cell.roomName], x * Canvas.cellSize, z * Canvas.cellSize, Canvas.cellSize, Canvas.cellSize);
+		const half = Canvas.cellSize / 2;
+
+		Canvas.ctx.drawImage(RoomIconBitmaps[cell.roomName], x * Canvas.cellSize - half, z * Canvas.cellSize - half, Canvas.cellSize * 2, Canvas.cellSize * 2);
 	}
 
 	public static async drawArrow(arrow: Arrow) {
