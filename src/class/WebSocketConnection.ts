@@ -56,8 +56,7 @@ export default class WebSocketConnection {
 				break;
 			case PacketType.CONFIG:
 				const json = await Utility.decompressBlob(Utility.base64ToBlob(data[1]));
-				const config = JSON.parse(json);
-				ClientConfig.setFromJSON(config);
+				ClientConfig.setFromJSON(json);
 
 				Canvas.hasChanged = true;
 				break;
