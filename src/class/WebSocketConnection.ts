@@ -16,6 +16,13 @@ export default class WebSocketConnection {
 		return isNull || isClosed;
 	}
 
+	public static forceReconnect() {
+		if (this.ws != null) {
+			this.ws.close();
+		}
+		this.tryConnectWebSocket();
+	}
+
 	public static tryConnectWebSocket() {
 		if (this.ws == null || this.ws.readyState === WebSocket.CLOSED) {
 			this.ws = new WebSocket(`ws://${Data.websocket_ip}:${Data.websocket_port}`);
