@@ -84,6 +84,11 @@ export default class WebSocketConnection {
 
 				Canvas.hasChanged = true;
 				break;
+			case PacketType.REMOVEARROW:
+				Data.removeArrow(data[1]);
+
+				Canvas.hasChanged = true;
+				break;
 		}
 	}
 }

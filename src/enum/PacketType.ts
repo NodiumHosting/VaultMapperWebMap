@@ -4,6 +4,7 @@ enum PacketType {
 	ARROW = "arrow",
 	CELL = "cell",
 	RESET = "reset",
+	REMOVEARROW = "removearrow",
 }
 
 export default PacketType;

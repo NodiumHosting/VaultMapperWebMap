@@ -43,6 +43,11 @@ export default class Data {
 		Data.save();
 	}
 
+	public static removeArrow(username: string) {
+		Data.arrows = Data.arrows.filter((a: Arrow) => a.username !== username);
+		Data.save();
+	}
+
 	public static clear() {
 		Data.cells = [];
 		Data.arrows = [];
